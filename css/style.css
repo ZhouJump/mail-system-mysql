@@ -1,0 +1,205 @@
+html,body{height: 100%;}
+body{margin: 0;}
+
+/*顶栏*/
+.topbar
+{
+    width: 100%;
+    height: 50px;
+    background: #3877ec;
+}
+/*左侧栏*/
+.mailbox
+{
+    margin: 12px;
+    position: relative;
+    border-radius: 8px;
+    background: white;
+    height:calc(100% - 74px);
+    width: 300px;
+    transition-property: all;
+    transition-duration: 0.4s;
+}
+/*写邮件按钮*/
+.write_mail
+{
+    position: absolute;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    color: white;
+    background-color: #3877ec;
+    right: 8px;
+    top: 8px;
+    width: 100px;
+    height: 40px;
+    transform: scale(1);
+}
+.write_mail:hover{transform: scale(1.02);}
+.write_mail:active{transform: scale(1);}
+/*分割线*/
+.hr
+{
+    border:none;
+    background-color: #ececec;
+    height: 1px;
+    width: calc(100% - 40px);
+    align-self: center
+}
+/*信箱滚动条*/
+.maillist
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: -17px;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.outbox
+{
+    height: calc(100% - 76px);
+    width: 300px;
+    position: relative;
+    overflow: hidden;
+}
+/*头像*/
+.icon
+{
+    background-color: #3877ec;
+    position: absolute;
+    left: 20px;
+    color: white;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 0;
+    border-radius: 20px;
+}
+.search
+{
+    position: relative;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    margin-top: 9px;
+    width: 300px;
+    height: 30px;
+    opacity: 1;
+    transition-duration: 0.4s;
+}
+.input
+{
+
+    position: relative;
+    border-radius: 8px;
+    outline: none;
+    border: #3877ec 2px solid;
+    margin-top: 9px;
+    width: 300px;
+    height: 30px;
+
+}
+.search:hover
+{
+    width: 500px;
+}
+.searchbut
+{
+    position: absolute;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    color: white;
+    background-color: #3877ec;
+    right: 2px;
+    top: -1px;
+    width: 60px;
+    height: 27px;
+    opacity: 1;
+    transition-property: all;
+    transition-duration: 0.4s;
+}
+.mail
+{
+    margin: 12px;
+    position: absolute;
+    left: 310px;
+    top:50px;
+    border-radius: 8px;
+    background: white;
+    height:calc(100% - 74px);
+    width: calc(100% - 330px);
+    opacity: 1;
+    transition-property: all;
+    transition-duration: 0.4s;
+}
+.mailfade
+{
+    margin: 12px;
+    position: absolute;
+    left: 310px;
+    top:100%;
+    opacity: 0;
+    border-radius: 8px;
+    background: white;
+    height:calc(100% - 120px);
+    width: calc(100% - 330px);
+    transition-duration: 0.4s;
+}
+.litter
+{
+    position: absolute;
+    left: 10px;
+    border-radius: 6px;
+    height: calc(100% - 120px);
+    width: calc(100% - 20px);
+    overflow-y: auto;
+    border: solid #3877ec 2px;
+}
+@media screen and (max-width: 860px)
+{
+    .search:hover
+    {
+        width: 400px;
+    }
+}
+@media screen and (max-width: 660px)
+{
+    .search
+    {
+        transition-duration: 0.4s;
+        opacity: 0;
+        width: 300px;
+    }
+    .searchbut
+    {
+        transition-duration: 0.2s;
+        opacity: 0;
+    }
+    .mail
+    {
+        left: 10px;
+        top:50px;
+        border-radius: 8px;
+        background: white;
+        height:calc(100% - 74px);
+        width: calc(100% - 30px);
+        transition-duration: 0.4s;
+    }
+    .mailfade
+    {
+        opacity: 0;
+        left: 100%;
+        top:50px;
+        width: calc(100% - 30px);
+        transition-duration: 0.4s;
+    }
+    .mailbox
+    {
+        width: calc(100% - 30px);
+        transition-duration: 0.4s;
+    }
+    .outbox {width: calc(100% - 30px);}
+}

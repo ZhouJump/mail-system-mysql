@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" style="overflow-y: hidden;overflow-x: hidden">
+<head>
+    <meta charset="UTF-8">
+    <title>邮件</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<!--顶栏-->
+<body style="background: #ececec">
+    <div class="topbar">
+        <div style="text-align: center">
+            <label style="position: relative">
+                <input class="search">
+                <button class="searchbut">搜索</button>
+            </label>
+        </div>
+        <h3 style="position: absolute;right:12px;top:-6px;color: white">三</h3>
+        <div style="position: absolute;left: 70px;top: -8px;color: white"><h3>zhoujump</h3>></div>
+        <div class="icon" style="background-color: white;color: #3877ec;top: 5px">
+            <h3>Z</h3>
+        </div>
+    </div>
+
+    <div style="color: #c9c9c9;position: absolute;left: 50%;top:30%;text-align: center">
+    <h1>邮件收发系统web前端</h1>
+    <h2>软工2112 周楚杰</h2>
+    <h2><a href=""></a></h2>
+    </div>
+<!--左侧栏-->
+    <div class="mailbox"  id = "app">
+        <h4 style="position: absolute;left: 30px;top: -4px">收件箱</h4>
+        <button class="write_mail" @click="setwrite"><b>写邮件</b></button>
+        <div style="height: 50px"></div>
+        <hr class="hr">
+        <div class="outbox">
+            <div    class="maillist" >
+                <div v-for="(item,index) in msglist" style="align-items: center"  @click="setview(index)">
+                    <div class="icon">
+                        <h3>{{item.account.charAt(0)}}</h3>
+                    </div>
+                    <div style="margin-left: 70px">{{item.account}}</div>
+                    <div style="margin-left: 70px">{{item.theme}}</div>
+                    <hr class="hr">
+                </div>
+            </div>
+        </div>
+    </div>
+<!--信件详情-->
+    <div :class="{ mailfade : mode === 'none', mail : mode === 'view'}" id="view" >
+        <div style="align-items: center">
+            <div style="height: 90px">
+                <h2 style="position: absolute;top: -10px;left:20px">{{letter.theme}}</h2>
+                <div class="icon" style="left: 20px;top:50px">
+                    <h3>{{letter.account.charAt(0)}}</h3>
+                </div>
+                <div style="top: 60px;left:70px;position: absolute">{{letter.account}}</div>
+                <div style="top: 60px;right:30px;position: absolute">{{letter.time}}</div>
+            </div>
+            <hr class="hr">
+            <button class="write_mail" style="width: 60px;height: 30px" @click="close_view()">关闭</button>
+            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: red" @click="">删除</button>
+        </div>
+        <div class="litter" v-html="letter.text"></div>
+    </div>
+
+    <div :class="{ mailfade : mode === 'none', mail : mode === 'view'}" id="write" >
+        <div style="align-items: center">
+            <button class="write_mail" style="width: 60px;height: 30px" @click="close_write()">关闭</button>
+            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: #17d017" @click="">发送</button>
+            <div>
+                <h3 style="position: absolute;left: 20px">新建邮件✉</h3>
+                <hr class="hr" style="top:50px;left: 20px;position: absolute">
+                <h4  style="position: absolute;left: 30px;top:54px">主题</h4>
+                <input v-model="letter.theme" class="input" style="position: absolute;left: 70px;top:60px;width: calc(100% - 100px)">
+                <h4 style="position: absolute;left: 30px;top:100px">收件人</h4>
+                <input v-model="letter.account" class="input" style="position: absolute;left: 84px;top:106px;width: calc(40% - 80px)">
+                <textarea v-model="letter.text" class="input" placeholder="请在此处输入正文,支持html语法" style="resize: none;position: absolute;left: 12px;top:150px;width: calc(40% - 6px);height: calc(100% - 180px)"></textarea>
+                <div class="litter" style="resize: none;position: absolute;left: calc(40% + 18px);top:114px;width: calc(60% - 30px);height: calc(100% - 130px)" v-html="letter.text"></div>
+                <h1 v-show="letter.text === ''" style="position: absolute;left: 68%;top: 49%;color: #c9c9c9">预览</h1>
+            </div>
+        </div>
+    </div>
+    <script src="js/vue.js"></script>
+    <script>
+        const app = new Vue
+        (
+            {
+            el: '#app',
+            data:
+                {
+                    msglist:[
+                        {id:'0001',account:'张三',time:'2003/6/1 6:30:03',theme:'张三的信件',text:'<iframe src="http://localhost:63342/easymail/index.html" width="100%" height="99%" scrolling="auto" frameborder="0"></iframe>'},
+                        {id:'0002',account:'李四',time:'2003/6/2 8:15:32',theme:'李四的信件',text:'<iframe src="https://cn.vuejs.org/" width="100%" height="99%" scrolling="auto" frameborder="0"></iframe>'},
+                        {id:'0003',account:'王五',time:'2003/6/3 14:20:14',theme:'王五的信件',text:'<button class="write_mail" style="width: 60px;height: 30px" @click="setwrite()">关闭</button>'}
+                    ]
+                },
+            methods:
+                {
+                    setview(index)
+                    {
+                        view.letter = app.msglist[index]
+                        view.mode = 'view'
+                        write.mode = 'none'
+                    },
+                    setwrite()
+                    {
+                        write.mode = 'view'
+                        view.mode = 'none'
+                    }
+                }
+            }
+        );
+        const view = new Vue
+        (
+            {
+                el: '#view',
+                data:
+                    {
+                    mode:'none',
+                    letter:{id:'0001',account:'张三',time:'2003/6/1 6:30:03',theme:'张三的信件',text:'text'}
+                    },
+                methods:
+                    {
+                        close_view()
+                        {
+                            this.mode = 'none'
+                            this.$refs.box.style.cssText = "display:none"
+                        }
+                    }
+            }
+        )
+        const write = new Vue
+        (
+            {
+                el: '#write',
+                data:
+                    {
+                        mode:'view',
+                        letter:{account:'',theme:'',text:''}
+                    },
+                methods:
+                    {
+                        close_write()
+                        {
+                            this.mode = 'none'
+                        }
+                    }
+            }
+        )
+    </script>
+</body>
+</html>
