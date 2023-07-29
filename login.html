@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: hidden;overflow-x: hidden">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background: #ececec">
+<div id="login" style="width: 100%;height: 100%">
+    <div class="mailbox info" :class="{infoerroe:error}" style="position: absolute;line-height: 0px;left: calc(50% - 100px);height: 40px;width: 200px;z-index: 2;opacity: 0.9;text-align: center">
+        <h3>账号或密码错误</h3>
+    </div>
+    <div class="mailbox" style="margin: 0 auto;height: 300px;width: 346px;top:calc(50% - 200px);z-index: 2;opacity: 0.9">
+        <h2 style="left: 20px;top:-8px;position: absolute">邮件系统</h2>
+        <label>
+            <div style="position: absolute;left: 20px;top:70px">账号</div>
+            <input :class="{inputerror:error}" v-model:value="account.account" class="input" style="position: absolute;top: 86px;left: 20px">
+            <div style="position: absolute;left: 20px;top:140px">密码</div>
+            <input :class="{inputerror:error}" v-model:value="account.password" type="password" class="input" style="position: absolute;top: 156px;left: 20px">
+            <button @click="login" class="write_mail"><h3 style="line-height: 12px">登录</h3></button>
+        </label>
+
+    </div>
+    <img src='https://api.cyrilstudio.top/bing/image.php' style="object-fit: cover;height: 100%;width: 100%;position: absolute;top: 0">
+</div>
+<script  src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/login.js"></script>
+
+</body>
+</html>

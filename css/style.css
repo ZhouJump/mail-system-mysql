@@ -64,10 +64,13 @@ body{margin: 0;}
     position: relative;
     overflow: hidden;
 }
+.list
+{
+    transition-duration: 0.4s;
+}
 /*头像*/
 .icon
 {
-    background-color: #3877ec;
     position: absolute;
     left: 20px;
     color: white;
@@ -99,7 +102,28 @@ body{margin: 0;}
     margin-top: 9px;
     width: 300px;
     height: 30px;
+    transition-duration: 0.4s;
 
+}
+.inputerror
+{
+    border: #e01e34 2px solid;
+    transition-property: all;
+    transition-duration: 0.4s;
+    background: salmon;
+
+}
+.info
+{
+    top: -60px;
+    transition-property: all;
+    transition-duration: 0.4s;
+}
+.infoerroe
+{
+    top: 20px;
+    transition-property: all;
+    transition-duration: 0.4s;
 }
 .search:hover
 {

@@ -5,23 +5,9 @@
     <title>邮件</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<!--顶栏-->
 <body style="background: #ececec">
-    <div class="topbar">
-        <div style="text-align: center">
-            <label style="position: relative">
-                <input class="search">
-                <button class="searchbut">搜索</button>
-            </label>
-        </div>
-        <h3 style="position: absolute;right:12px;top:-6px;color: white">三</h3>
-        <div style="position: absolute;left: 70px;top: -8px;color: white"><h3>zhoujump</h3>></div>
-        <div class="icon" style="background-color: white;color: #3877ec;top: 5px">
-            <h3>Z</h3>
-        </div>
-    </div>
-
-    <div style="color: #c9c9c9;position: absolute;left: 50%;top:30%;text-align: center">
+<!--顶栏-->
+<div style="color: #c9c9c9;position: absolute;left: 50%;top:30%;text-align: center">
     <h1>邮件收发系统web前端</h1>
     <h2>软工2112 周楚杰</h2>
     <h2>
@@ -29,7 +15,35 @@
         <a href="https://gitee.com/zhoujump/mail-system-mysql" target="_blank" style="color: #c9c9c9">码云</a>
         <a href="https://github.com/ZhouJump/mail-system-mysql" target="_blank" style="color: #c9c9c9">github</a>
     </h2>
+</div>
+    <div class="topbar"  id="topbar">
+        <div style="text-align: center">
+            <label style="position: relative">
+                <div  class="search" style="text-align: center;margin: 0 auto">
+                <input @mouseleave="searhide" @mouseenter="sear" v-model="keyword" class="search" style="z-index: 3;width: 100%;text-align: center" placeholder="通过账户名和主题搜索">
+                <div @mouseleave="searhide" @mouseenter="sear" v-show=" mode === 'view'" class="outbox" style="z-index: 2;margin: 0 auto;position: absolute;top:22px;border-radius: 8px;height: 300px;left: -2px;width: calc(100% + 4px);background: white;border: #3877ec 2px solid;">
+                    <div class="maillist" style="top:20px">
+                        <div class="list" v-for="(item,index) in searchlist" style="align-items: center"  @click="setview(item.id)">
+                            <div class="icon" :style="{background:(item.type === 'sent'?'#17d017':'#3877ec')} ">
+                                <h3>{{item.account.charAt(0)}}</h3>
+                            </div>
+                            <div style="margin-left: 70px">{{item.account}}</div>
+                            <div style="margin-left: 70px">{{item.theme}}</div>
+                            <hr class="hr">
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </label>
+        </div >
+
+        <h3 style="position: absolute;right:12px;top:-6px;color: white">三</h3>
+        <div style="position: absolute;left: 70px;top: -8px;color: white"><h3>{{account.account}}</h3>></div>
+        <div class="icon" style="background-color: white;color: #3877ec;top: 5px">
+            <h3>{{account.account.charAt(0)}}</h3>
+        </div>
     </div>
+
 <!--左侧栏-->
     <div class="mailbox"  id = "app">
         <h4 style="position: absolute;left: 30px;top: -4px">收件箱</h4>
@@ -38,8 +52,8 @@
         <hr class="hr">
         <div class="outbox">
             <div    class="maillist" >
-                <div v-for="(item,index) in msglist" style="align-items: center"  @click="setview(index)">
-                    <div class="icon">
+                <div class="list" v-for="(item,index) in msglist" style="align-items: center"  @click="setview(index)">
+                    <div class="icon" :style="{background:(item.type === 'sent'?'#17d017':'#3877ec')} ">
                         <h3>{{item.account.charAt(0)}}</h3>
                     </div>
                     <div style="margin-left: 70px">{{item.account}}</div>
@@ -54,7 +68,7 @@
         <div style="align-items: center">
             <div style="height: 90px">
                 <h2 style="position: absolute;top: -10px;left:20px">{{letter.theme}}</h2>
-                <div class="icon" style="left: 20px;top:50px">
+                <div class="icon" :style="{background:(letter.type === 'sent'?'#17d017':'#3877ec')} " style="left: 20px;top:50px">
                     <h3>{{letter.account.charAt(0)}}</h3>
                 </div>
                 <div style="top: 60px;left:70px;position: absolute">{{letter.account}}</div>
@@ -62,7 +76,7 @@
             </div>
             <hr class="hr">
             <button class="write_mail" style="width: 60px;height: 30px" @click="close_view()">关闭</button>
-            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: red" @click="">删除</button>
+            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: red" @click="del(letter.id)">删除</button>
         </div>
         <div class="litter" v-html="letter.text"></div>
     </div>
@@ -70,7 +84,7 @@
     <div :class="{ mailfade : mode === 'none', mail : mode === 'view'}" id="write" >
         <div style="align-items: center">
             <button class="write_mail" style="width: 60px;height: 30px" @click="close_write()">关闭</button>
-            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: #17d017" @click="">发送</button>
+            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: #17d017" @click="sentmail">发送</button>
             <div>
                 <h3 style="position: absolute;left: 20px">新建邮件✉</h3>
                 <hr class="hr" style="top:50px;left: 20px;position: absolute">
@@ -84,73 +98,11 @@
             </div>
         </div>
     </div>
+
+
+    <script  src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="js/vue.js"></script>
-    <script>
-        const app = new Vue
-        (
-            {
-            el: '#app',
-            data:
-                {
-                    msglist:[
-                        {id:'0001',account:'张三',time:'2003/6/1 6:30:03',theme:'张三的信件',text:'<iframe src="http://localhost:63342/easymail/index.html" width="100%" height="99%" scrolling="auto" frameborder="0"></iframe>'},
-                        {id:'0002',account:'李四',time:'2003/6/2 8:15:32',theme:'李四的信件',text:'<iframe src="https://cn.vuejs.org/" width="100%" height="99%" scrolling="auto" frameborder="0"></iframe>'},
-                        {id:'0003',account:'王五',time:'2003/6/3 14:20:14',theme:'王五的信件',text:'<button class="write_mail" style="width: 60px;height: 30px" @click="setwrite()">关闭</button>'}
-                    ]
-                },
-            methods:
-                {
-                    setview(index)
-                    {
-                        view.letter = app.msglist[index]
-                        view.mode = 'view'
-                        write.mode = 'none'
-                    },
-                    setwrite()
-                    {
-                        write.mode = 'view'
-                        view.mode = 'none'
-                    }
-                }
-            }
-        );
-        const view = new Vue
-        (
-            {
-                el: '#view',
-                data:
-                    {
-                    mode:'none',
-                    letter:{id:'0001',account:'张三',time:'2003/6/1 6:30:03',theme:'张三的信件',text:'text'}
-                    },
-                methods:
-                    {
-                        close_view()
-                        {
-                            this.mode = 'none'
-                            this.$refs.box.style.cssText = "display:none"
-                        }
-                    }
-            }
-        )
-        const write = new Vue
-        (
-            {
-                el: '#write',
-                data:
-                    {
-                        mode:'view',
-                        letter:{account:'',theme:'',text:''}
-                    },
-                methods:
-                    {
-                        close_write()
-                        {
-                            this.mode = 'none'
-                        }
-                    }
-            }
-        )
-    </script>
+    <script src="js/index.js"></script>
+
 </body>
 </html>
