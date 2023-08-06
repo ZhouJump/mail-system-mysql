@@ -28,7 +28,7 @@
             <label style="position: relative">
                 <div  class="search" style="text-align: center;margin: 0 auto">
                 <input @mouseleave="searhide" @mouseenter="sear" v-model="keyword" class="search" style="z-index: 3;width: 100%;text-align: center" placeholder="通过账户名和主题搜索">
-                <div @mouseleave="searhide" @mouseenter="sear" v-show=" mode === 'view'" class="outbox" style="z-index: 2;margin: 0 auto;position: absolute;top:22px;border-radius: 8px;height: 300px;left: -2px;width: calc(100% + 4px);background: white;border: #3877ec 2px solid;">
+                <div @mouseleave="searhide" @mouseenter="sear" v-show=" mode === 'view'" class="outbox" style="z-index: 2;margin: 0 auto;position: absolute;top:22px;border-radius: 8px;height: 300px;left: -1px;width: calc(100% + 4px);background: white;border: #3877ec 2px solid;">
                     <div class="maillist" style="top:20px">
                         <div class="list" v-for="(item,index) in searchlist" style="align-items: center"  @click="setview(item.id)">
                             <div class="icon" :style="{background:(item.type === 'sent'?'#17d017':'#3877ec')} ">
