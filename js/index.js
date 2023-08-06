@@ -7,10 +7,28 @@ const topbar = new Vue
                 searchlist:[],
                 keyword:'',
                 mode:'none',
-                account:JSON.parse(localStorage.getItem('account'))
+                account:JSON.parse(localStorage.getItem('account')),
+                error: false,
+                infomation: ''
             },
         methods:
             {
+                logout()
+                {
+                    topbar.account.account = ''
+                    topbar.account.password = ''
+                    localStorage.setItem('account',JSON.stringify(topbar.account))
+                    location.href='login.html'
+                },
+                sentinfo(info)
+                {
+                    topbar.infomation = info
+                    topbar.error = true
+                   setTimeout(function()
+                    {
+                        topbar.error = false
+                    }, 2000)
+                },
                 setview(id)
                 {
 
@@ -22,7 +40,7 @@ const topbar = new Vue
                 },
                 sear()
                 {
-                    keyword = topbar.keyword
+                    let keyword = topbar.keyword
                     if(keyword === '')
                         topbar .mode= 'none'
                     else {
@@ -56,7 +74,7 @@ const app = new Vue
         el: '#app',
         data:
             {
-                msglist:JSON.parse(localStorage.getItem('msglist'+topbar.account.account.toString())) || [],
+                msglist:JSON.parse(localStorage.getItem('msglist'+topbar.account.account.toString())) || []
             },
         methods:
             {
@@ -75,28 +93,37 @@ const app = new Vue
                 {
                     const res = await axios
                     ({
-                        url:'http://localhost:8080/get/getmail',
+                        url:'http://mail.zhoujump.club:8080/get/getmail',
                         params:
                             {
                                 account:topbar.account.account,
                                 password:topbar.account.password
                             }
                     })
-                    if(res.data === null)
+                    if(res.data.length === 0)
                     {
-                        return
                     }
                     else
                     {
                         console.log(res.data)
                         app.msglist = res.data.concat(app.msglist)
+                        topbar.sentinfo('收到新消息')
                     }
-
                 }
             },
         mounted()
         {
-            setInterval(this.update(),5000)
+            if(topbar.account.account === '')
+                location.href='login.html'
+            this.update
+            if (this.timer) {
+                clearInterval(this.timer);
+            } else {
+                this.timer = setInterval(this.update, 5000);
+            }
+        },
+        beforeDestroy() {
+            clearInterval(this.timer);
         },
         watch:
             {
@@ -129,6 +156,7 @@ const view = new Vue
                 del(id)
                 {
                     app.msglist = app.msglist.filter(item => item.id !== id)
+                    topbar.sentinfo('邮件已删除')
                     this.mode = 'none'
                 }
             }
@@ -151,7 +179,12 @@ const write = new Vue
                 },
                 async sentmail()
                 {
-                    var _this = this;
+                    if(write.letter.theme === '' || write.letter.text ==='')
+                    {
+                        topbar.sentinfo('请输入主题与正文')
+                        return
+                    }
+                    const _this = this;
                     let yy = new Date().getFullYear();
                     let mm = new Date().getMonth()+1;
                     let dd = new Date().getDate();
@@ -171,7 +204,7 @@ const write = new Vue
                         }
                     const res = await axios
                     ({
-                        url:'http://localhost:8080/get/sentmail',
+                        url:'http://mail.zhoujump.club:8080/get/sentmail',
                         params:
                             {
                                 account:topbar.account.account,
@@ -181,11 +214,25 @@ const write = new Vue
                                 from:write.letter.account
                             }
                     })
-                    console.log(res.data)
-                    app.msglist.unshift(newletter)
-                    view.letter = app.msglist[0]
-                    view.mode = 'view'
-                    write.mode = 'none'
+                    if(res.data === 'Success')
+                    {
+                        console.log(res.data)
+                        topbar.sentinfo('发送成功')
+                        app.msglist.unshift(newletter)
+                        view.letter = app.msglist[0]
+                        view.mode = 'view'
+                        write.mode = 'none'
+                    }
+                    else if (res.data === 'nouser')
+                        topbar.sentinfo('收件人不存在')
+                    else if (res.data === 'AccountError')
+                    {
+                        topbar.sentinfo('请重新登录')
+                        location.href='login.html'
+                    }
+                    else
+                        topbar.sentinfo('服务器出错拉')
+
                 }
             }
     }

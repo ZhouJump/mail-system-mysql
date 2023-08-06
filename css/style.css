@@ -116,12 +116,14 @@ body{margin: 0;}
 .info
 {
     top: -60px;
+    border: #3877ec 2px solid;
     transition-property: all;
     transition-duration: 0.4s;
 }
 .infoerroe
 {
-    top: 20px;
+    top: 40px;
+    border: #3877ec 2px solid;
     transition-property: all;
     transition-duration: 0.4s;
 }

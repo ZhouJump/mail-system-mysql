@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>邮件</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.4/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body style="background: #ececec">
 <!--顶栏-->
@@ -17,6 +18,12 @@
     </h2>
 </div>
     <div class="topbar"  id="topbar">
+        <div v-if="false" style="position: absolute;width: 100%;height: 100%;text-align: center;background-color: #ececec;z-index: 5">
+            <h1 style="color: #c9c9c9">加载中...</h1>
+        </div>
+        <div class="mailbox info" :class="{infoerroe:error}" style="position: absolute;line-height: 0px;left: calc(50% - 100px);height: 40px;width: 200px;z-index: 4;text-align: center">
+            <h3>{{infomation}}</h3>
+        </div>
         <div style="text-align: center">
             <label style="position: relative">
                 <div  class="search" style="text-align: center;margin: 0 auto">
@@ -37,8 +44,10 @@
             </label>
         </div >
 
-        <h3 style="position: absolute;right:12px;top:-6px;color: white">三</h3>
-        <div style="position: absolute;left: 70px;top: -8px;color: white"><h3>{{account.account}}</h3>></div>
+        <h3 @click="logout" style="position: absolute;right:12px;top:-6px;color: white">登出
+            <i class="bi bi-box-arrow-right"></i>
+        </h3>
+        <div style="position: absolute;left: 70px;top: -8px;color: white"><h3>{{account.account}}</h3></div>
         <div class="icon" style="background-color: white;color: #3877ec;top: 5px">
             <h3>{{account.account.charAt(0)}}</h3>
         </div>
@@ -46,8 +55,8 @@
 
 <!--左侧栏-->
     <div class="mailbox"  id = "app">
-        <h4 style="position: absolute;left: 30px;top: -4px">收件箱</h4>
-        <button class="write_mail" @click="setwrite"><b>写邮件</b></button>
+        <h4 style="position: absolute;left: 30px;top: -4px">收件箱 <i class="bi bi-envelope-fill"></i></h4>
+        <button class="write_mail" @click="setwrite"><b>写邮件 <i class="bi bi-pencil-square"></i></b></button>
         <div style="height: 50px"></div>
         <hr class="hr">
         <div class="outbox">
@@ -75,18 +84,18 @@
                 <div style="top: 60px;right:30px;position: absolute">{{letter.time}}</div>
             </div>
             <hr class="hr">
-            <button class="write_mail" style="width: 60px;height: 30px" @click="close_view()">关闭</button>
-            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: red" @click="del(letter.id)">删除</button>
+            <button class="write_mail" style="width: 60px;height: 30px" @click="close_view()">关闭 <i class="bi bi-x-square-fill"></i></button>
+            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: red" @click="del(letter.id)">删除 <i class="bi bi-trash3-fill"></i></button>
         </div>
         <div class="litter" v-html="letter.text"></div>
     </div>
 
     <div :class="{ mailfade : mode === 'none', mail : mode === 'view'}" id="write" >
         <div style="align-items: center">
-            <button class="write_mail" style="width: 60px;height: 30px" @click="close_write()">关闭</button>
-            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: #17d017" @click="sentmail">发送</button>
+            <button class="write_mail" style="width: 60px;height: 30px" @click="close_write()">关闭 <i class="bi bi-x-square-fill"></i></button>
+            <button class="write_mail" style="width: 60px;height: 30px;right:80px;background-color: #17d017" @click="sentmail">发送 <i class="bi bi-send-fill"></i></button>
             <div>
-                <h3 style="position: absolute;left: 20px">新建邮件✉</h3>
+                <h3 style="position: absolute;left: 20px">新建邮件 <i class="bi bi-file-earmark-plus-fill"></i></h3>
                 <hr class="hr" style="top:50px;left: 20px;position: absolute">
                 <h4  style="position: absolute;left: 30px;top:54px">主题</h4>
                 <input v-model="letter.theme" class="input" style="position: absolute;left: 70px;top:60px;width: calc(100% - 100px)">
@@ -101,7 +110,7 @@
 
 
     <script  src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="js/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.min.js"></script>
     <script src="js/index.js"></script>
 
 </body>
